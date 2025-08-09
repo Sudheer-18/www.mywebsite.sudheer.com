@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, ExternalLink, Code2 } from 'lucide-react';
 import Axios from 'axios';
+
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -20,8 +21,14 @@ const Contact: React.FC = () => {
     e.preventDefault();
     // Handle form submission here
     console.log('Form submitted:', formData);
-    // let data = Axios.post(`http://localhost:8000/sendmsg`, formData);
-    setFormData({ name: '', email: '', message: '' });
+    Axios.post('https://localhost:8000/contact', formData)
+      .then(response => {
+        console.log('Response:', response.data);
+        setFormData({ name: '', email: '', message: '' });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   const contactInfo = [

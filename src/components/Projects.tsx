@@ -29,7 +29,7 @@ const Projects: React.FC = () => {
         'This app and website shows analysis of a student, including resume ATS scoring and MCQ tests on selected topics for improvement.',
       icon: BookOpen,
       tech: ['ReactNative', 'Nodejs', 'JavaScript'],
-      demoLink: 'https://student-placement-analysis.vercel.app/',
+      demoLink: 'https://project-final-version1.vercel.app/',
       githubLink: 'https://github.com/Sudheer-18/StudentPlacementAnalysis',
       gradient: 'from-yellow-500 to-orange-500'
     },
