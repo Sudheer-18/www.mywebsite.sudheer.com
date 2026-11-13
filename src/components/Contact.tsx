@@ -3,7 +3,10 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, ExternalLink, Code2 } from 'lucide-react';
 import Axios from 'axios';
 
-const apiBaseUrl = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') ?? '';
+const apiBaseUrl = (
+  import.meta.env.VITE_API_URL
+  || (import.meta.env.DEV ? '' : 'https://my-website-baackend.onrender.com')
+).replace(/\/+$/, '');
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
