@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Github, Linkedin, ExternalLink, Code2 } from 'lucide-react';
 
+const roles = ['B.Tech ECE Student', 'Full Stack Developer', 'Problem Solver', 'Tech Enthusiast'];
+
 const Hero: React.FC = () => {
   const [displayText, setDisplayText] = useState('');
-  const roles = ['B.Tech ECE Student', 'Full Stack Developer', 'Problem Solver', 'Tech Enthusiast'];
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -89,7 +90,7 @@ const Hero: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="flex justify-center lg:justify-start space-x-6 mb-8"
             >
-              {socialLinks.map((social, index) => (
+              {socialLinks.map((social) => (
                 <motion.a
                   key={social.label}
                   href={social.href}

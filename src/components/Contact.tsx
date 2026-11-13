@@ -3,32 +3,45 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, ExternalLink, Code2 } from 'lucide-react';
 import Axios from 'axios';
 
+const apiBaseUrl = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') ?? '';
+
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setFormStatus(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    Axios.post('https://localhost:8000/contact', formData)
-      .then(response => {
-        console.log('Response:', response.data);
-        setFormData({ name: '', email: '', message: '' });
-      })
-      .catch(error => {
-        console.error('Error:', error);
+    setIsSubmitting(true);
+    setFormStatus(null);
+
+    try {
+      await Axios.post(`${apiBaseUrl}/api/contact`, formData);
+      setFormData({ name: '', email: '', message: '' });
+      setFormStatus({ type: 'success', message: 'Your message was sent successfully. Thank you for reaching out!' });
+    } catch (error) {
+      const serverMessage = Axios.isAxiosError<{ message?: string }>(error)
+        ? error.response?.data?.message
+        : undefined;
+      setFormStatus({
+        type: 'error',
+        message: serverMessage || 'We could not send your message. Please try again later or email me directly.'
       });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -36,7 +49,7 @@ const Contact: React.FC = () => {
       icon: Mail,
       label: 'Email',
       value: 'kosireddysudheer803@gmail.com',
-      href: 'mailto:sudheer13ks@gmail.com',
+      href: 'mailto:kosireddysudheer803@gmail.com',
       color: 'from-blue-500 to-cyan-600'
     },
     {
@@ -166,11 +179,20 @@ const Contact: React.FC = () => {
                   type="submit"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <Send size={20} />
-                  <span>Send Message</span>
+                  <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                 </motion.button>
+                {formStatus && (
+                  <p
+                    role={formStatus.type === 'error' ? 'alert' : 'status'}
+                    className={formStatus.type === 'success' ? 'text-sm text-green-600 dark:text-green-400' : 'text-sm text-red-600 dark:text-red-400'}
+                  >
+                    {formStatus.message}
+                  </p>
+                )}
               </form>
             </div>
           </motion.div>
@@ -189,7 +211,7 @@ const Contact: React.FC = () => {
                 Contact Information
               </h3>
               <div className="space-y-6">
-                {contactInfo.map((info, index) => (
+                {contactInfo.map((info) => (
                   <motion.a
                     key={info.label}
                     href={info.href}
@@ -214,7 +236,7 @@ const Contact: React.FC = () => {
                 Connect With Me
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                {socialLinks.map((social, index) => (
+                {socialLinks.map((social) => (
                   <motion.a
                     key={social.label}
                     href={social.href}
