@@ -8,11 +8,33 @@ import {
   Brain,
   Briefcase,
   BookOpen,
+  Code2,
+  Bus
 } from 'lucide-react';
 import { Code } from 'lucide-react';
 
 const Projects: React.FC = () => {
   const projects = [
+      {
+    title: 'CodeCollab',
+    description:
+      'A real-time collaborative coding platform that enables multiple users to write, edit, and execute code together. Features include live code synchronization, real-time collaboration, and an interactive coding environment.',
+    icon: Code2,
+    tech: ['React', 'Node.js', 'Express.js', 'MongoDB', 'Socket.IO'],
+    demoLink: 'https://code-collab-dun-three.vercel.app/',
+    githubLink: 'https://github.com/Sudheer-18/CodeCollab',
+    gradient: 'from-blue-500 to-cyan-600',
+  },
+  {
+    title: 'SeatSync',
+    description:
+      'A smart bus ticket booking platform that allows users to search trips, check seat availability, and book tickets seamlessly. Features include JWT authentication, Redis-based seat locking, idempotent booking operations, and real-time seat management.',
+    icon: Bus,
+    tech: ['React', 'Spring Boot', 'MySQL', 'Redis', 'JWT', 'Docker'],
+    demoLink: 'https://reactproject-rho-nine.vercel.app/',
+    githubLink: 'https://github.com/Sudheer-18/SeatSync',
+    gradient: 'from-purple-500 to-indigo-600',
+  },
     {
       title: 'Blood Donation Stats Tracker',
       description:
